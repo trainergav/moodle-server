@@ -88,7 +88,7 @@ if [ ! -d "/var/lib/moodle" ]; then
 fi
 
 # Copy the Moodle code to the web server.
-cp moodle /var/www/html
+cp -r moodle /var/www/html
 
 exit 0
 
