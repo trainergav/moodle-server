@@ -1,3 +1,6 @@
+# A script to automate the installation of a Moodle server. Basically doing the steps listed here:
+# https://docs.moodle.org/404/en/Installation_quick_guide
+
 copyOrDownload () {
     echo Copying $1 to $2, mode $3...
     if [ -f $1 ]; then
