@@ -11,9 +11,9 @@ You will also need a [domain name](https://en.wikipedia.org/wiki/Domain_name) av
 This project uses the [Caddy web server](https://caddyserver.com/), and therefore will automatically handle obtaining an HTTPS certificate from [Let's Encrypt](https://letsencrypt.org/).
 
 All the software installed by this project is free and open source. The setup script, if it works correctly, should result in your machine running instances of:
- - Moodle
- - Apache
+ - Apache, with PHP
  - MariaDB
+ - Moodle
 
 As of May 2024, this script has been tested on a Debian 12 (Bookworm) release. It could well work okay on Raspberry Pi OS, using a Raspberry Pi as a handy low-cost server, but I haven't tested that yet.
 
