@@ -72,10 +72,12 @@ if [ ! -d "/etc/php" ]; then
     apt install -y php libapache2-mod-php php-mysql
 fi
 
-# Get Moodle from Github.
+# Get Moodle 4.4 via Git.
 if [ ! -d "moodle" ]; then
-    git clone -b MOODLE_403_STABLE git://git.moodle.org/moodle.git
+    git clone -b MOODLE_404_STABLE git://git.moodle.org/moodle.git
 fi
+
+mysql --user=root --password=$dbpassword -e "CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 exit 0
 
