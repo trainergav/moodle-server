@@ -10,7 +10,9 @@ copyOrDownload () {
     chmod $3 $2
 }
 
+# Set default command-line flag values.
 servertitle="Moodle Server"
+
 # Read user-defined command-line flags.
 while test $# -gt 0; do
     case "$1" in
@@ -24,6 +26,11 @@ while test $# -gt 0; do
             pagetitle=$1
             shift
             ;;
+        -dbpassword)
+            shift
+            dbpassword=$1
+            shift
+            ;;
         *)
             echo "$1 is not a recognized flag!"
             exit 1;
@@ -32,10 +39,11 @@ while test $# -gt 0; do
 done
 
 # Check all required flags are set, print a usage message if not.
-if [ -z "$servername" ]; then
-    echo "Usage: install.sh -servername SERVERNAME [-servertitle SERVERTITLE]"
-    echo "SERVERNAME: The full domain name of the Moodle server (e.g. moodle.example.com)"
-    echo "Optional: SERVERTITLE: A title for the Moodle server (e.g. \"My Company Moodle Server\""
+if [ -z "$servername" ] || [ -z "$dbpassword" ]; then
+    echo "Usage: install.sh -servername SERVERNAME -dbpassword DATABASEPASSWORD [-servertitle SERVERTITLE]"
+    echo "SERVERNAME: The full domain name of the Moodle server (e.g. moodle.example.com)."
+    echo "DATABASEPASSWORD: The root password to set for the MariaDB database."
+    echo "Optional: SERVERTITLE: A title for the Moodle server (e.g. \"My Company Moodle Server\"."
     exit 1;
 fi
 
@@ -47,9 +55,19 @@ if [ ! -d "/etc/apache2" ]; then
 fi
 
 # Make sure the MariaDB database server is installed.
-if [ ! -f "/usr/bin/mariadb" ]; then
+# if [ ! -f "/usr/bin/mariadb" ]; then
     apt install -y mariadb-server
-fi
+    # After installing MariaDB, it seems to be best practice to run the "mysql_secure_installation" script to reconfigure a few default settings to be more secure.
+    # Here, we automate this process using the approach outlined at: https://bertvv.github.io/notes-to-self/2015/11/16/automating-mysql_secure_installation/
+    mysql --user=root <<_EOF_
+        UPDATE mysql.user SET Password=PASSWORD('${dbpassword}') WHERE User='root';
+        DELETE FROM mysql.user WHERE User='';
+        DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+        DROP DATABASE IF EXISTS test;
+        DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+        FLUSH PRIVILEGES;
+    _EOF_
+# fi
 
 exit 0
 
