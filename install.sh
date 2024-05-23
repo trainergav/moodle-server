@@ -47,7 +47,7 @@ if [ ! -d "/etc/apache2" ]; then
 fi
 
 # Make sure the MariaDB database server is installed.
-if [ ! -d "/usr/bin/mariadb" ]; then
+if [ ! -f "/usr/bin/mariadb" ]; then
     apt install -y mariadb-server
 fi
 
