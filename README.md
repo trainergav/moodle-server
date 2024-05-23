@@ -6,11 +6,14 @@ This project provides a setup script that is intended for people who want a (hop
 
 If you're using this project it's assumed you are probably a system administrator of some sort (maybe working for a school or other learning establishment) wanting to set up a Moodle server for your users. This project is not something you'll want to run on your desktop machine, you'll be wanting at least a basic, publicly-accessible web server, either hosted on your own hardware or by a web/cloud hosting provider of some sort. As of writing (May 2024), a suitible hosted virtual machine from a public provider is available for under $5 a month.
 
-You will also need a [domain name](https://en.wikipedia.org/wiki/Domain_name) available (e.g. example.com), and the ability to set up a [sub-domain](https://en.wikipedia.org/wiki/Subdomain) (e.g. moodle.example.com). This project uses the [Caddy web server](https://caddyserver.com/), and therefore will automatically handle obtaining an HTTPS certificate from [Let's Encrypt](https://letsencrypt.org/).
+You will also need a [domain name](https://en.wikipedia.org/wiki/Domain_name) available (e.g. example.com), and the ability to set up a [sub-domain](https://en.wikipedia.org/wiki/Subdomain) (e.g. moodle.example.com).
+
+This project uses the [Caddy web server](https://caddyserver.com/), and therefore will automatically handle obtaining an HTTPS certificate from [Let's Encrypt](https://letsencrypt.org/).
 
 All the software installed by this project is free and open source. The setup script, if it works correctly, should result in your machine running instances of:
  - Moodle
- - Caddy
+ - Apache
+ - MariaDB
 
 As of May 2024, this script has been tested on a Debian 12 (Bookworm) release. It could well work okay on Raspberry Pi OS, using a Raspberry Pi as a handy low-cost server, but I haven't tested that yet.
 
