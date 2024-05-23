@@ -40,7 +40,7 @@ if [ -z "$servername" ]; then
 fi
 
 # Make sure the Apache web server is installed.
-if [ ! -d "/etc/apache" ]; then
+if [ ! -d "/etc/apache2" ]; then
     apt install -y apache2
 fi
 exit 0
