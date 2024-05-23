@@ -55,7 +55,7 @@ if [ ! -d "/etc/apache2" ]; then
 fi
 
 # Make sure the MariaDB database server is installed.
-# if [ ! -f "/usr/bin/mariadb" ]; then
+if [ ! -f "/usr/bin/mariadb" ]; then
     apt install -y mariadb-server
     # After installing MariaDB, it seems to be best practice to run the "mysql_secure_installation" script to reconfigure a few default settings to be more secure.
     # Here, we automate this process using the approach outlined at: https://bertvv.github.io/notes-to-self/2015/11/16/automating-mysql_secure_installation/
@@ -65,7 +65,12 @@ fi
     mysql --user=root --password=$dbpassword -e "DROP DATABASE IF EXISTS test;"
     mysql --user=root --password=$dbpassword -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
     mysql --user=root --password=$dbpassword -e "FLUSH PRIVILEGES;"
-# fi
+fi
+
+# Make sure PHP is installed.
+if [ ! -d "/etc/php" ]; then
+    apt install -y php libapache2-mod-php php-mysql
+fi
 
 exit 0
 
