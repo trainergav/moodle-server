@@ -89,6 +89,8 @@ fi
 
 # Copy the Moodle code to the web server.
 cp -r moodle /var/www/html
+rm /var/www/html/moodle/config-dist.php
+copyOrDownload config.php /var/www/html/moodle/config.php 0644
 
 exit 0
 
