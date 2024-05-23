@@ -39,9 +39,9 @@ if [ -z "$servername" ]; then
     exit 1;
 fi
 
-# Make sure the Caddy web server is installed.
-if [ ! -d "/etc/caddy" ]; then
-    apt install -y caddy
+# Make sure the Apache web server is installed.
+if [ ! -d "/etc/apache" ]; then
+    apt install -y apache
 fi
 exit 0
 
