@@ -39,6 +39,8 @@ if [ -z "$servername" ]; then
     exit 1;
 fi
 
+echo Installing Moodle server "$servertitle".
+
 # Make sure the Apache web server is installed.
 if [ ! -d "/etc/apache2" ]; then
     apt install -y apache2
