@@ -72,6 +72,11 @@ if [ ! -d "/etc/php" ]; then
     apt install -y php libapache2-mod-php php-mysql
 fi
 
+# Get Moodle from Github.
+if [ ! -d "moodle" ]; then
+    git clone -b MOODLE_403_STABLE git://git.moodle.org/moodle.git
+fi
+
 exit 0
 
 
