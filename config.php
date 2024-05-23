@@ -38,19 +38,19 @@ $CFG = new stdClass();
 // will be stored.  This database must already have been created         //
 // and a username/password created to access it.                         //
 
-$CFG->dbtype    = 'pgsql';      // 'pgsql', 'mariadb', 'mysqli', 'auroramysql', 'sqlsrv' or 'oci'
+$CFG->dbtype    = 'mariadb';      // 'pgsql', 'mariadb', 'mysqli', 'auroramysql', 'sqlsrv' or 'oci'
 $CFG->dblibrary = 'native';     // 'native' only at the moment
 $CFG->dbhost    = 'localhost';  // eg 'localhost' or 'db.isp.com' or IP
 $CFG->dbname    = 'moodle';     // database name, eg moodle
-$CFG->dbuser    = 'username';   // your database username
-$CFG->dbpass    = 'password';   // your database password
+$CFG->dbuser    = 'moodleuser';   // your database username
+$CFG->dbpass    = '{{DBPASSWORD}}';   // your database password
 $CFG->prefix    = 'mdl_';       // prefix to use for all table names
 $CFG->dboptions = array(
     'dbpersist' => false,       // should persistent database connections be
                                 //  used? set to 'false' for the most stable
                                 //  setting, 'true' can improve performance
                                 //  sometimes
-    'dbsocket'  => false,       // should connection via UNIX socket be used?
+    'dbsocket'  => true,       // should connection via UNIX socket be used?
                                 //  if you set it to 'true' or custom path
                                 //  here set dbhost to 'localhost',
                                 //  (please note mysql is always using socket
@@ -162,7 +162,7 @@ $CFG->dboptions = array(
 // If you need both intranet and Internet access please read
 // http://docs.moodle.org/en/masquerading
 
-$CFG->wwwroot   = 'http://example.com/moodle';
+$CFG->wwwroot   = 'https://{{SERVERNAME}}';
 
 
 //=========================================================================
@@ -178,7 +178,7 @@ $CFG->wwwroot   = 'http://example.com/moodle';
 //
 // - On Windows systems you might specify something like 'c:\moodledata'
 
-$CFG->dataroot  = '/home/example/moodledata';
+$CFG->dataroot  = '/var/lib/moodle';
 
 
 //=========================================================================
