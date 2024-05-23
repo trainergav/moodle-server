@@ -41,7 +41,7 @@ fi
 
 # Make sure the Apache web server is installed.
 if [ ! -d "/etc/apache" ]; then
-    apt install -y apache
+    apt install -y apache2
 fi
 exit 0
 
