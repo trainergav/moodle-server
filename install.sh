@@ -81,6 +81,15 @@ fi
 mysql --user=root --password=$dbpassword -e "CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON moodle.* TO 'moodleuser'@'localhost' IDENTIFIED BY '$dbpassword';"
 
+# Set up the Moodle data folder.
+if [ ! -d "/var/lib/moodle" ]; then
+    mkdir /var/lib/moodle
+    chown www-data:www-data /var/lib/moodle
+fi
+
+# Copy the Moodle code to the web server.
+cp moodle /var/www/html
+
 exit 0
 
 
