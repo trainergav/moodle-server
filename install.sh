@@ -2,15 +2,15 @@ copyOrDownload () {
     echo Copying $1 to $2, mode $3...
     if [ -f $1 ]; then
         cp $1 $2
-    elif [ -f remote-gateway/$1 ]; then
-        cp remote-gateway/$1 $2
+    elif [ -f moodle-server/$1 ]; then
+        cp moodle-server/$1 $2
     else
-        wget https://github.com/dhicks6345789/remote-gateway/raw/master/$1 -O $2
+        wget https://github.com/dhicks6345789/moodle-server/raw/master/$1 -O $2
     fi
     chmod $3 $2
 }
 
-pagetitle="Guacamole"
+servertitle="Moodle Server"
 # Read user-defined command-line flags.
 while test $# -gt 0; do
     case "$1" in
@@ -19,7 +19,7 @@ while test $# -gt 0; do
             servername=$1
             shift
             ;;
-        -pagetitle)
+        -servertitle)
             shift
             pagetitle=$1
             shift
@@ -33,11 +33,19 @@ done
 
 # Check all required flags are set, print a usage message if not.
 if [ -z "$servername" ]; then
-    echo "Usage: install.sh -servername SERVERNAME [-pagetitle PAGETITLE]"
-    echo "SERVERNAME: The full domain name of the Guacamole server (e.g. guacamole.example.com)"
-    echo "Optional: PAGETITLE: A title for the HTML page (tab title) displayed."
+    echo "Usage: install.sh -servername SERVERNAME [-servertitle SERVERTITLE]"
+    echo "SERVERNAME: The full domain name of the Moodle server (e.g. moodle.example.com)"
+    echo "Optional: SERVERTITLE: A title for the Moodle server (e.g. \"My Company Moodle Server\""
     exit 1;
 fi
+
+# Make sure the Caddy web server is installed.
+if [ ! -d "/etc/caddy" ]; then
+    apt install -y caddy
+fi
+exit 0
+
+
 
 # 14th June 2023: Debian 12 (Bookworm): The packaged version of Tomcat is v10, which Guacamole doesn't yet support.
 # Therefore, we'll install Tomcat v9 (from distributed binaries) instead. We modify 1-setup.sh and 2-install-guacamole.sh to explicitly set the Tomcat version.
