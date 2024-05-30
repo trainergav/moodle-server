@@ -63,7 +63,6 @@ echo Installing Moodle server \""$servertitle"\"...
 # Make sure the Apache web server is installed.
 if [ ! -d "/etc/apache2" ]; then
     apt install -y apache2
-    # a2enmod rewrite
     rm /var/www/html/index.html
 fi
 
@@ -81,9 +80,9 @@ if [ ! -f "/usr/bin/mariadb" ]; then
 fi
 
 # Make sure PHP is installed.
-if [ ! -d "/etc/php" ]; then
-    apt install -y php libapache2-mod-php php-mysql php-xml php-mbstring
-fi
+#if [ ! -d "/etc/php" ]; then
+    apt install -y php libapache2-mod-php php-mysql php-xml php-mbstring php-curl php-zip php-gd php-intl php-soap
+#fi
 
 # Get Moodle 4.4 via Git.
 if [ ! -d "moodle" ]; then
