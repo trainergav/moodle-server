@@ -15,6 +15,7 @@ copyOrDownload () {
 
 # Set default command-line flag values.
 servertitle="Moodle Server"
+sslhandler="cloudflare"
 
 # Read user-defined command-line flags.
 while test $# -gt 0; do
@@ -26,12 +27,17 @@ while test $# -gt 0; do
             ;;
         -servertitle)
             shift
-            pagetitle=$1
+            servertitle=$1
             shift
             ;;
         -dbpassword)
             shift
             dbpassword=$1
+            shift
+            ;;
+        -sslhandler)
+            shift
+            sslhandler=$1
             shift
             ;;
         *)
@@ -43,10 +49,12 @@ done
 
 # Check all required flags are set, print a usage message if not.
 if [ -z "$servername" ] || [ -z "$dbpassword" ]; then
-    echo "Usage: install.sh -servername SERVERNAME -dbpassword DATABASEPASSWORD [-servertitle SERVERTITLE]"
+    echo "Usage: install.sh -servername SERVERNAME -dbpassword DATABASEPASSWORD [-servertitle SERVERTITLE] [-sslhandler cloudflare | caddy]"
     echo "SERVERNAME: The full domain name of the Moodle server (e.g. moodle.example.com)."
     echo "DATABASEPASSWORD: The root password to set for the MariaDB database."
     echo "Optional: SERVERTITLE: A title for the Moodle server (e.g. \"My Company Moodle Server\"."
+    echo "Optional: \"cloudflare\" or \"caddy\" as SSL Handler options. If \"cloudflare\" (the default), Moodle will be configured assuming a Cloudflare"
+    echo "          Tunnel will be used to provide SSL ingress. If \"caddy\", Caddy webserver will be installed and set up to auto-configure SSL."
     exit 1;
 fi
 
@@ -96,6 +104,9 @@ rm /var/www/html/moodle/config-dist.php
 copyOrDownload config.php /var/www/html/moodle/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/moodle/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/moodle/config.php
+if [ $sslhandler = "cloudflare" ]; then
+    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/moodle/config.php
+fi
 
 # Make sure DOS2Unix is installed.
 if [ ! -f "/usr/bin/dos2unix" ]; then
