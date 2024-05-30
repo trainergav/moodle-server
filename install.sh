@@ -64,6 +64,7 @@ echo Installing Moodle server \""$servertitle"\"...
 if [ ! -d "/etc/apache2" ]; then
     apt install -y apache2
     # a2enmod rewrite
+    rm /var/www/html/index.html
 fi
 
 # Make sure the MariaDB database server is installed.
