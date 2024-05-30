@@ -163,7 +163,7 @@ $CFG->dboptions = array(
 // http://docs.moodle.org/en/masquerading
 
 #$CFG->wwwroot   = 'https://{{SERVERNAME}}';
-$CFG->wwwroot   = 'http://{{SERVERNAME}}';
+$CFG->wwwroot   = 'http://{{SERVERNAME}}/moodle';
 
 
 //=========================================================================
