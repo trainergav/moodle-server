@@ -63,7 +63,7 @@ echo Installing Moodle server \""$servertitle"\"...
 # Make sure the Apache web server is installed.
 if [ ! -d "/etc/apache2" ]; then
     apt install -y apache2
-    a2enmod rewrite
+    # a2enmod rewrite
 fi
 
 # Make sure the MariaDB database server is installed.
@@ -100,13 +100,13 @@ if [ ! -d "/var/lib/moodle" ]; then
 fi
 
 # Copy the Moodle code to the web server.
-cp -r moodle /var/www/html
-rm /var/www/html/moodle/config-dist.php
-copyOrDownload config.php /var/www/html/moodle/config.php 0644
-sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/moodle/config.php
-sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/moodle/config.php
+cp -r moodle/* /var/www/html
+rm /var/www/html/config-dist.php
+copyOrDownload config.php /var/www/html/config.php 0644
+sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
+sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
 if [ $sslhandler = "cloudflare" ]; then
-    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/moodle/config.php
+    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/config.php
 fi
 
 # Make sure DOS2Unix is installed.
