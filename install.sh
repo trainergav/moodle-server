@@ -71,9 +71,9 @@ if [ ! -f "/usr/bin/mariadb" ]; then
 fi
 
 # Make sure PHP is installed.
-if [ ! -d "/etc/php" ]; then
-    apt install -y php libapache2-mod-php php-mysql
-fi
+#if [ ! -d "/etc/php" ]; then
+    apt install -y php libapache2-mod-php php-mysql php-xml
+#fi
 
 # Get Moodle 4.4 via Git.
 if [ ! -d "moodle" ]; then
