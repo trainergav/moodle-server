@@ -72,7 +72,7 @@ fi
 
 # Make sure PHP is installed.
 #if [ ! -d "/etc/php" ]; then
-    apt install -y php libapache2-mod-php php-mysql php-xml
+    apt install -y php libapache2-mod-php php-mysql php-xml php-mbstring
 #fi
 
 # Get Moodle 4.4 via Git.
@@ -109,3 +109,6 @@ if [ ! -f "/var/spool/cron/crontabs/root" ]; then
     crontab crontab
     rm crontab
 fi
+
+# Restart Apache so any changes take effect.
+service apache2 restart
