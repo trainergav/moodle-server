@@ -94,7 +94,7 @@ fi
 cp -r moodle /var/www/html
 rm /var/www/html/moodle/config-dist.php
 copyOrDownload config.php /var/www/html/moodle/config.php 0644
-sed -i 's/{{DBPASSWORD}}/"$dbpassword"/g' /var/www/html/moodle/config.php
+sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/moodle/config.php
 
 exit 0
 
