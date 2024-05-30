@@ -35,7 +35,7 @@ while test $# -gt 0; do
             shift
             ;;
         *)
-            echo "$1 is not a recognized flag!"
+            echo "$1 is not a recognized flag."
             exit 1;
             ;;
     esac
@@ -96,6 +96,9 @@ rm /var/www/html/moodle/config-dist.php
 copyOrDownload config.php /var/www/html/moodle/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/moodle/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/moodle/config.php
+
+# Set up Crontab if it doesn't already exist.
+crontab moodle/crontab
 
 exit 0
 
