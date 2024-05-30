@@ -97,7 +97,13 @@ copyOrDownload config.php /var/www/html/moodle/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/moodle/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/moodle/config.php
 
+# Make sure DOS2Unix is installed.
+if [ ! -f "/usr/bin/dos2unix" ]; then
+    apt install -y dos2unix
+fi
+
 # Set up Crontab if it doesn't already exist.
 copyOrDownload crontab crontab 0644
+dos2unix crontab
 crontab crontab
 rm crontab
