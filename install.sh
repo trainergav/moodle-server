@@ -138,4 +138,6 @@ if [ $sslhandler = "caddy" ]; then
         apt update
         apt install caddy
     fi
+
+    # To do: add Caddy config here, configure to act as HTTPS proxy for Apache.
 fi
