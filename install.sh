@@ -81,10 +81,10 @@ if [ ! -f "/usr/bin/mariadb" ]; then
 fi
 
 # Make sure PHP is installed.
-#if [ ! -d "/etc/php" ]; then
+if [ ! -d "/etc/php" ]; then
     apt install -y php libapache2-mod-php php-mysql php-xml php-mbstring php-curl php-zip php-gd php-intl php-soap
     sed -i 's/;max_input_vars = 1000/max_input_vars = 6000/g' /etc/php/8.2/apache2/php.ini
-#fi
+fi
 
 # Get Moodle 4.4 via Git.
 if [ ! -d "moodle" ]; then
@@ -107,8 +107,10 @@ rm /var/www/html/config-dist.php
 copyOrDownload config.php /var/www/html/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
-if [ $sslhandler = "cloudflare" ]; then
+if [ $sslhandler = "cloudflare" ] || [ $sslhandler = "caddy" ]; then
     sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/config.php
+else
+    sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/config.php
 fi
 
 # Make sure DOS2Unix is installed.
@@ -126,3 +128,14 @@ fi
 
 # Restart Apache so any changes take effect.
 service apache2 restart
+
+# Optionally, install Caddy web server.
+if [ $sslhandler = "caddy" ]; then
+    if [ ! -d "/etc/caddy" ]; then
+        apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+        curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+        curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+        apt update
+        apt install caddy
+    fi
+fi
