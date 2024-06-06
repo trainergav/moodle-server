@@ -49,7 +49,7 @@ done
 
 # Check all required flags are set, print a usage message if not.
 if [ -z "$servername" ] || [ -z "$dbpassword" ]; then
-    echo "Usage: install.sh -servername SERVERNAME -dbpassword DATABASEPASSWORD [-servertitle SERVERTITLE] [-sslhandler cloudflare | caddy]"
+    echo "Usage: install.sh -servername SERVERNAME -dbpassword DATABASEPASSWORD [-servertitle SERVERTITLE] [-sslhandler none | tunnel | caddy]"
     echo "SERVERNAME: The full domain name of the Moodle server (e.g. moodle.example.com)."
     echo "DATABASEPASSWORD: The root password to set for the MariaDB database."
     echo "Optional: SERVERTITLE: A title for the Moodle server (e.g. \"My Company Moodle Server\". Defaults to \"Moodle Server\"" 
@@ -107,7 +107,7 @@ rm /var/www/html/config-dist.php
 copyOrDownload config.php /var/www/html/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
-if [ $sslhandler = "cloudflare" ] || [ $sslhandler = "caddy" ]; then
+if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
     sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/config.php
 else
     sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/config.php
