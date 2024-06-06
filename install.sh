@@ -15,7 +15,7 @@ copyOrDownload () {
 
 # Set default command-line flag values.
 servertitle="Moodle Server"
-sslhandler="cloudflare"
+sslhandler="none"
 
 # Read user-defined command-line flags.
 while test $# -gt 0; do
@@ -52,9 +52,10 @@ if [ -z "$servername" ] || [ -z "$dbpassword" ]; then
     echo "Usage: install.sh -servername SERVERNAME -dbpassword DATABASEPASSWORD [-servertitle SERVERTITLE] [-sslhandler cloudflare | caddy]"
     echo "SERVERNAME: The full domain name of the Moodle server (e.g. moodle.example.com)."
     echo "DATABASEPASSWORD: The root password to set for the MariaDB database."
-    echo "Optional: SERVERTITLE: A title for the Moodle server (e.g. \"My Company Moodle Server\"."
-    echo "Optional: \"cloudflare\" or \"caddy\" as SSL Handler options. If \"cloudflare\" (the default), Moodle will be configured assuming a Cloudflare"
-    echo "          Tunnel will be used to provide SSL ingress. If \"caddy\", Caddy webserver will be installed and set up to auto-configure SSL."
+    echo "Optional: SERVERTITLE: A title for the Moodle server (e.g. \"My Company Moodle Server\". Defaults to \"Moodle Server\"" 
+    echo "Optional: \"tunnel\" or \"caddy\" as SSL Handler options. If \"tunnel\", Moodle will be configured assuming an SSL tunneling"
+    echo "          service (Cloudflare, NGrok, etc) will be used to provide SSL ingress. If \"caddy\", Caddy webserver will be installed"
+    echo "          and set up to auto-configure SSL. If \"none\" (the default), neither option will be configured for."
     exit 1;
 fi
 
