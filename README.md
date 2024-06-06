@@ -45,4 +45,12 @@ This project, and all the software installed by it, is free and open source - yo
 
 As of June 2024, this script has been tested on a Debian 12 (Bookworm) release. It could well work okay on Raspberry Pi OS, using a Raspberry Pi as a handy low-cost server, but I haven't tested that yet.
 
-You should wind up with a freshly-installed Moodle server. You will then need to connect to the Moodle server by opening up a web browser (pointing at the domain name you provided, e.g. https://moodle.example.com) and stepping through the inital configuration screens.
+You should wind up with a freshly-installed Moodle server available on (standard HTTP) port 80. You should then make sure you can (securly, i.e. via HTTPS) connect to the server using whatever method you prefer:
+ - If you specified "tunnel" as your SSL Handler option, you'll need to install / configure your SSL tunnel. Typically, you'll have a service of some sort to install on the server and some configuration options to complete at the provider's end. If the provider asks you for a local port / URL for its service to point at, 'HTTP://localhost:80' is probably correct.
+ - If you specified "caddy", an instance of Caddy web server should also be running, configured to act as a proxy server providing SSL functionality to the Apache server running Moodle. Caddy will take care of configuring its own SSL certificate.
+
+With either of the above options, you should now be able to connect to the Moodle server by opening up a web browser pointing at the domain name you provided (e.g. https://moodle.example.com)
+
+If you specified "none" as the SSL Handler option, you'll need to configure SSL yourself (probably by adding to the Apache config and making sure port 443 (SSL) is publically available, either by checking your web server provider's configuration or, if using a local server, making sure port forwarding is set up on your firewall).
+
+When you have got a browser open and connected to the Moodle server, you should then be able to step through Moodle's inital configuration screens.
