@@ -16,6 +16,7 @@ copyOrDownload () {
 # Set default command-line flag values.
 servertitle="Moodle Server"
 sslhandler="none"
+dbname="moodle"
 
 # Read user-defined command-line flags.
 while test $# -gt 0; do
@@ -28,6 +29,11 @@ while test $# -gt 0; do
         -servertitle)
             shift
             servertitle=$1
+            shift
+            ;;
+         -dbname)
+            shift
+            dbname=$1
             shift
             ;;
         -dbpassword)
@@ -48,10 +54,11 @@ while test $# -gt 0; do
 done
 
 # Check all required flags are set, print a usage message if not.
-if [ -z "$servername" ] || [ -z "$dbpassword" ]; then
-    echo "Usage: install.sh -servername SERVERNAME -dbpassword DATABASEPASSWORD [-servertitle SERVERTITLE] [-sslhandler none | tunnel | caddy]"
+if [ -z "$servername" ] || [ -z "$dbpassword" ]; then 
+echo "Usage: install.sh -servername SERVERNAME -dbpassword DATABASEPASSWORD   -[dbname DBNAME] [-servertitle SERVERTITLE] [-sslhandler none | tunnel | caddy]"
     echo "SERVERNAME: The full domain name of the Moodle server (e.g. moodle.example.com)."
     echo "DATABASEPASSWORD: The root password to set for the MariaDB database."
+    echo "Optional: DBNAME: Install an instance of Moodle into a nominated database and location (e.g. \"moodle500\". Defaults to \"moodle\"" 
     echo "Optional: SERVERTITLE: A title for the Moodle server (e.g. \"My Company Moodle Server\". Defaults to \"Moodle Server\"" 
     echo "Optional: \"tunnel\" or \"caddy\" as SSL Handler options. If \"tunnel\", Moodle will be configured assuming an SSL tunneling"
     echo "          service (Cloudflare, NGrok, etc) will be used to provide SSL ingress. If \"caddy\", Caddy webserver will be installed"
@@ -88,32 +95,56 @@ if [ ! -d "/etc/php" ]; then
 #    sed -i 's/;max_input_vars = 1000/max_input_vars = 9000/g' /etc/php/8.2/apache2/php.ini
 fi
 
-# Get Moodle 4.4 via Git.
+# Get Moodle 5.0.1 via Git.
 if [ ! -d "moodle" ]; then
     git clone -b MOODLE_500_STABLE git://git.moodle.org/moodle.git
 fi
 
 # Create / set up the Moodle database.
+
+
+if [[ $dbname == "moodle" ]]
+then
 mysql --user=root --password=$dbpassword -e "CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON moodle.* TO 'moodleuser'@'localhost' IDENTIFIED BY '$dbpassword';"
+mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON .* TO 'moodle'@'localhost' IDENTIFIED BY '$dbpassword';"
+else
+mysql --user=root --password=$dbpassword -e "CREATE DATABASE $dbname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON .* TO '$dbname'@'localhost' IDENTIFIED BY '$dbpassword';"
+fi 
 
 # Set up the Moodle data folder.
-if [ ! -d "/var/lib/moodle" ]; then
-    mkdir /var/lib/moodle
-    chown www-data:www-data /var/lib/moodle
+if [ ! -d "/var/lib/$dbname" ]; then
+    mkdir /var/lib/$dbname
+    chown www-data:www-data /var/lib/$dbname
 fi
 
 # Copy the Moodle code to the web server.
+if [[ $dbname == "moodle" ]]
+then
 cp -r moodle/* /var/www/html
 rm /var/www/html/config-dist.php
 copyOrDownload config.php /var/www/html/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
+sed -i "s/{{DATABASE}}/moodle/g" /var/www/html/config.php
 if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
     sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/config.php
 else
     sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/config.php
 fi
+else
+cp -r moodle/* /var/www/html/$dbname
+rm /var/www/html/$dbname/config-dist.php
+copyOrDownload config.php /var/www/html/$dbname/config.php 0644
+sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html$dbname//config.php
+sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/$dbname/config.php
+sed -i "s/{{DATABASE}}/$dbname/g" /var/www/html/$dbname/config.php
+if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
+    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/$dbname/config.php
+else
+    sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/$dbname/config.php
+fi
+
 
 # Make sure DOS2Unix is installed.
 if [ ! -f "/usr/bin/dos2unix" ]; then
