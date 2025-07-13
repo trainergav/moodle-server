@@ -16,12 +16,12 @@ This project has a couple of options for handling connectivity from the outside 
 ## Installation
 On a freshly installed Debian 12 (Bookworm) server, as root, run:
 ```
-wget https://github.com/dhicks6345789/moodle-server/raw/master/install.sh
+wget https://github.com/trainergav/moodle-server/raw/master/install.sh
 bash install.sh -servername moodle.example.com -dbpassword ExamplePassword123 -servertitle "Example Moodle Server" -sslhandler tunnel
 ```
 Or, download from Github and run the install script:
 ```
-git clone https://github.com/dhicks6345789/moodle-server.git
+git clone https://github.com/trainergav/moodle-server.git
 bash moodle-server/install.sh -servername moodle.example.com -dbpassword ExamplePassword123 -servertitle "Example Moodle Server" -sslhandler tunnel
 ```
 You'll need to provide some values:
