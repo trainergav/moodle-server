@@ -121,7 +121,7 @@ if [ ! -f "/usr/bin/dos2unix" ]; then
 fi
 
 # Set up Crontab if it doesn't already exist.
-if [ ! -f "/var/spool/cron/crontabs/root" ]; then
+if [ ! -f "/var/spool/cron/crontabs/www.data" ]; then
     copyOrDownload crontab crontab 0644
     dos2unix crontab
     crontab crontab
