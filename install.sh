@@ -88,7 +88,7 @@ fi
 
 # Get Moodle 4.4 via Git.
 if [ ! -d "moodle" ]; then
-    git clone -b MOODLE_404_STABLE git://git.moodle.org/moodle.git
+    git clone -b MOODLE_500_STABLE git://git.moodle.org/moodle.git
 fi
 
 # Create / set up the Moodle database.
