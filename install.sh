@@ -83,7 +83,7 @@ fi
 # Make sure PHP is installed.
 if [ ! -d "/etc/php" ]; then
     apt install -y php libapache2-mod-php php-mysql php-xml php-mbstring php-curl php-zip php-gd php-intl php-soap
-    sed -i 's/;max_input_vars = 1000/max_input_vars = 6000/g' /etc/php/8.2/apache2/php.ini
+    sed -i 's/;max_input_vars = 1000/max_input_vars = 9000/g' /etc/php/8.2/apache2/php.ini
 fi
 
 # Get Moodle 4.4 via Git.
