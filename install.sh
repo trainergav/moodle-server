@@ -14,12 +14,18 @@ copyOrDownload () {
 }
 
 # Set default command-line flag values.
+moodlebranch="MOODLE_500_STABLE"
 servertitle="Moodle Server"
 sslhandler="none"
 
 # Read user-defined command-line flags.
 while test $# -gt 0; do
     case "$1" in
+        -moodlebranch)
+            shift
+            moodlebranch=$1
+            shift
+            ;;
         -servername)
             shift
             servername=$1
@@ -86,9 +92,9 @@ if [ ! -d "/etc/php" ]; then
     sed -i 's/;max_input_vars = 1000/max_input_vars = 6000/g' /etc/php/8.2/apache2/php.ini
 fi
 
-# Get Moodle 4.4 via Git.
+# Get Moodle via Git.
 if [ ! -d "moodle" ]; then
-    git clone -b MOODLE_404_STABLE git://git.moodle.org/moodle.git
+    git clone -b $moodlebranch git://git.moodle.org/moodle.git
 fi
 
 # Create / set up the Moodle database.
