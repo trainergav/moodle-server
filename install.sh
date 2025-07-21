@@ -106,7 +106,7 @@ fi
 
 if [[ $dbname == "moodle" ]]
 then
-mysql --user=root --password=$dbpassword -e "CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql --user=root --password=$dbpassword -e "CREATE DATABASE  $dbname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON .* TO 'moodle'@'localhost' IDENTIFIED BY '$dbpassword';"
 else
 mysql --user=root --password=$dbpassword -e "CREATE DATABASE $dbname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
