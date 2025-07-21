@@ -107,11 +107,8 @@ fi
 if [[ $dbname == "moodle" ]]
 then
 mysql --user=root --password=$dbpassword -e "CREATE DATABASE  $dbnam $dbname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON .* TO 'moodle'@'localhost' IDENTIFIED BY '$dbpassword';"
-else
-mysql --user=root --password=$dbpassword -e "CREATE DATABASE $dbname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON $dbname.* TO '$dbname'@'localhost' IDENTIFIED BY '$dbpassword';"
-fi 
+mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON  $dbname.* TO 'moodle'@'localhost' IDENTIFIED BY '$dbpassword';"
+fi
 
 # Set up the Moodle data folder.
 if [ ! -d "/var/www/$dbname" ]; then
