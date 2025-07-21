@@ -115,10 +115,10 @@ if [ ! -d "/var/www/$dbname" ]; then
 fi
 
 
-# Copy the Moodle code to the web server.
+# Copy the Moodle code to the web server
+
 cp -r moodle/* /var/www/html
 rm /var/www/html/config-dist.php
-
 copyOrDownload config.php /var/www/html/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
@@ -127,13 +127,6 @@ if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
 else
     sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/config.php
 fi
-
-
-rm /var/www/html/config-dist.php
-copyOrDownload config.php /var/www/html/config.php 0644
-sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
-sed -i "s/{{SERVERNAM
-
 
 # Make sure DOS2Unix is installed.
 if [ ! -f "/usr/bin/dos2unix" ]; then
