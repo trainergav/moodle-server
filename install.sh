@@ -114,32 +114,25 @@ if [ ! -d "/var/www/$dbname" ]; then
     chown www-data:www-data /var/www/$dbname
 fi
 
+
 # Copy the Moodle code to the web server.
-if [[ $dbname == "moodle" ]]
-then
 cp -r moodle/* /var/www/html
 rm /var/www/html/config-dist.php
+
 copyOrDownload config.php /var/www/html/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
-sed -i "s/{{DATABASE}}/moodle/g" /var/www/html/config.php
 if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
     sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/config.php
 else
     sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/config.php
 fi
-else
-cp -r moodle/* /var/www/html/$dbname
-rm /var/www/html/$dbname/config-dist.php
-copyOrDownload config.php /var/www/html/$dbname/config.php 0644
-sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html$dbname/config.php
-sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/$dbname/config.php
-sed -i "s/{{DATABASE}}/$dbname/g" /var/www/html/$dbname/config.php
-if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
-    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/$dbname/config.php
-else
-    sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/$dbname/config.php
-fi
+
+
+rm /var/www/html/config-dist.php
+copyOrDownload config.php /var/www/html/config.php 0644
+sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
+sed -i "s/{{SERVERNAM
 
 
 # Make sure DOS2Unix is installed.
