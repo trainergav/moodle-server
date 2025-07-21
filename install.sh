@@ -14,6 +14,7 @@ copyOrDownload () {
 }
 
 # Set default command-line flag values.
+moodlebranch="MOODLE_500_STABLE"
 servertitle="Moodle Server"
 sslhandler="none"
 dbname="moodle"
@@ -97,7 +98,7 @@ fi
 
 # Get Moodle 5.0.1 via Git.
 if [ ! -d "moodle" ]; then
-    git clone -b MOODLE_500_STABLE git://git.moodle.org/moodle.git
+    git clone -b $moodlebranch git://git.moodle.org/moodle.git
 fi
 
 # Create / set up the Moodle database.
@@ -113,9 +114,9 @@ mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,C
 fi 
 
 # Set up the Moodle data folder.
-if [ ! -d "/var/lib/$dbname" ]; then
-    mkdir /var/lib/$dbname
-    chown www-data:www-data /var/lib/$dbname
+if [ ! -d "/var/www/$dbname" ]; then
+    mkdir /var/www/$dbname
+    chown www-data:www-data /var/www/$dbname
 fi
 
 # Copy the Moodle code to the web server.
@@ -152,7 +153,7 @@ if [ ! -f "/usr/bin/dos2unix" ]; then
 fi
 
 # Set up Crontab if it doesn't already exist.
-if [ ! -f "/var/spool/cron/crontabs/www.data" ]; then
+if [ ! -f "/var/spool/cron/crontabs/www-data" ]; then
     copyOrDownload crontab crontab 0644
     dos2unix crontab
     crontab crontab
