@@ -20,7 +20,11 @@ apt install git
 
 git clone https://github.com/trainergav/moodle-server.git
 
-bash moodle-server/install.sh -servername moodle.example.com -dbpassword ExamplePassword123 -servertitle "Example Moodle Server" -sslhandler tunnel
+sudo bash moodle-server/install.sh -servername moodle.example.com -dbpassword ExamplePassword123 -servertitle "Example Moodle Server" -sslhandler tunnel
+
+To run locally with no https use:
+sudo bash moodle-server/install.sh -servername [ip address] -dbpassword ExamplePassword123 -servertitle "Moodle Server" -sslhandler none
+
 
 ```
 You'll need to provide some values:
