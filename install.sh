@@ -102,9 +102,6 @@ if [ ! -d "moodle" ]; then
 fi
 
 # Create / set up the Moodle database.
-
-
-
 mysql --user=root --password=$dbpassword -e "CREATE DATABASE $dbname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON  $dbname.* TO 'moodle'@'localhost' IDENTIFIED BY '$dbpassword';"
 mysql --user=root --password=$dbpassword -e "FLUSH PRIVILEGES;"
@@ -118,8 +115,10 @@ fi
 
 # Copy the Moodle code to the web server
 
-cp -r moodle/* /var/www/html/private
-rm /var/www/html/private/config-dist.php
+cp -r moodle/* /var/www/html
+mkdir /var/www/html/private
+chmod 755 /var/www/html/private
+rm /var/www/html/config-dist.php
 copyOrDownload config.php /var/www/html/private/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/private/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/private/config.php
