@@ -114,27 +114,32 @@ mysql --user=root --password=$dbpassword -e "FLUSH PRIVILEGES;"
 
 echo Moodle user database created and user setup \""$servertitle"\"...
 
+# Create / set up the Moodle database.
+mysql --user=root --password=$dbpassword -e "CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON moodle.* TO 'moodleuser'@'localhost' IDENTIFIED BY '$dbpassword';"
+
 # Set up the Moodle data folder.
-if [ ! -d "/var/www/$dbname" ]; then
-    mkdir /var/www/$dbname
-    chown www-data:www-data /var/www/$dbname
+if [ ! -d "/var/lib/moodle" ]; then
+    mkdir /var/lib/moodle
+    chown www-data:www-data /var/lib/moodle
 fi
 
 echo Moodle DATADIR created \""$servertitle"\"...
 
-# Copy the Moodle code to the web server
-
+# Copy the Moodle code to the web server.
 cp -r moodle/* /var/www/html
 rm /var/www/html/config-dist.php
 copyOrDownload config.php /var/www/html/config.php 0644
 sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
 sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
+
+echo Moodle config.php DBname and DB password updated \""$servertitle"\"...
+
 if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
     sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/config.php
 else
     sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/config.php
 fi
-
 
 # Make sure DOS2Unix is installed.
 if [ ! -f "/usr/bin/dos2unix" ]; then
