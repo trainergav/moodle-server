@@ -126,13 +126,13 @@ echo Moodle DATADIR created \""$servertitle"\"...
 
 cp -r moodle/* /var/www/html
 rm /var/www/html/config-dist.php
-copyOrDownload config.php /var/www/html/public/config.php 0644
-sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/public/config.php
-sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/public/config.php
+copyOrDownload config.php /var/www/html/config.php 0644
+sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
+sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
 if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
-    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/public/config.php
+    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/config.php
 else
-    sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/public/config.php
+    sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/config.php
 fi
 
 
