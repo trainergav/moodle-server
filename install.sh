@@ -103,7 +103,7 @@ fi
 
 # Create / set up the Moodle database.
 mysql --user=root --password=$dbpassword -e "CREATE DATABASE $dbname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON  $dbname.* TO 'moodle'@'localhost' IDENTIFIED BY '$dbpassword';"
+mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON  $dbname.* TO 'moodleuser'@'localhost' IDENTIFIED BY '$dbpassword';"
 mysql --user=root --password=$dbpassword -e "FLUSH PRIVILEGES;"
 
 # Set up the Moodle data folder.
