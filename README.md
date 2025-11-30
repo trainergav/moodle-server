@@ -14,7 +14,7 @@ This project has a couple of options for handling connectivity from the outside 
  - Neither of the above, in which case the Moodle server will be available via HTTP. This assumes you are going to set up your own HTTPS configuration, possibly by adding your own certificate to the Apache configuration.
 
 ## Installation
-On a freshly installed Debian 12 (Bookworm) server, as root, run:
+On a freshly installed Debian 13 (Trixie) server, as root, run:
 
 apt install git
 
@@ -23,6 +23,7 @@ git clone https://github.com/trainergav/moodle-server.git
 sudo bash moodle-server/install.sh -servername moodle.example.com -dbpassword ExamplePassword123 -servertitle "Example Moodle Server" -sslhandler tunnel
 
 To run locally with no https use:
+```
 sudo bash moodle-server/install.sh -servername 10.2.222.136 -dbpassword ExamplePassword123 -servertitle "Moodle Server" -sslhandler none
 
 
