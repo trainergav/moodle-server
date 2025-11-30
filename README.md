@@ -15,11 +15,11 @@ This project has a couple of options for handling connectivity from the outside 
 
 ## Installation
 On a freshly installed Debian 13 (Trixie) server, as root, run:
-
+```
 apt install git
 
 git clone https://github.com/trainergav/moodle-server.git
-
+```
 sudo bash moodle-server/install.sh -servername moodle.example.com -dbpassword ExamplePassword123 -servertitle "Example Moodle Server" -sslhandler tunnel
 
 To run locally with no https use:
