@@ -14,7 +14,7 @@ copyOrDownload () {
 }
 
 # Set default command-line flag values.
-moodlebranch="MOODLE_500_STABLE"
+moodlebranch="MOODLE_501_STABLE"
 servertitle="Moodle Server"
 sslhandler="none"
 dbname="moodle"
@@ -91,7 +91,7 @@ fi
 # Make sure PHP is installed.
 if [ ! -d "/etc/php" ]; then
     apt install -y php libapache2-mod-php php-mysql php-xml php-mbstring php-curl php-zip php-gd php-intl php-soap
-    sed -i 's/;max_input_vars = 1000/max_input_vars = 9000/g' /etc/php/8.2/apache2/php.ini
+    sed -i 's/;max_input_vars = 1000/max_input_vars = 9000/g' /etc/php/8.4/apache2/php.ini
 #    sed -i 's/;max_execution_time = /max_execution_time = 160/g' /etc/php/8.4/apache2/php.ini
 #    sed -i 's/;max_input_vars = 1000/max_input_vars = 9000/g' /etc/php/8.4/apache2/php.ini
 fi
@@ -118,15 +118,15 @@ fi
 
 # Copy the Moodle code to the web server
 
-cp -r moodle/* /var/www/html
-rm /var/www/html/config-dist.php
-copyOrDownload config.php /var/www/html/config.php 0644
-sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
-sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
+cp -r moodle/* /var/www/html/private
+rm /var/www/html/private/config-dist.php
+copyOrDownload config.php /var/www/html/private/config.php 0644
+sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/private/config.php
+sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/private/config.php
 if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
-    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/config.php
+    sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/private/config.php
 else
-    sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/config.php
+    sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/private/config.php
 fi
 
 # Make sure DOS2Unix is installed.
