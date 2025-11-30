@@ -82,7 +82,7 @@ if [ ! -f "/usr/bin/mariadb" ]; then
     apt install -y mariadb-server
     # After installing MariaDB, it seems to be best practice to run the "mysql_secure_installation" script to reconfigure a few default settings to be more secure.
     # Here, we automate this process using the approach outlined at: https://bertvv.github.io/notes-to-self/2015/11/16/automating-mysql_secure_installation/
-    mysql --user=root -e "UPDATE mysql.user SET Password=PASSWORD('$dbpassword') WHERE User='root';"
+    mysql --user=root -e "ALTER mysql.user SET Password=PASSWORD('$dbpassword') WHERE User='root';"
     mysql --user=root --password=$dbpassword -e "DELETE FROM mysql.user WHERE User='';"
     mysql --user=root --password=$dbpassword -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
     mysql --user=root --password=$dbpassword -e "DROP DATABASE IF EXISTS test;"
