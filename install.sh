@@ -75,6 +75,8 @@ if [ ! -d "/etc/apache2" ]; then
     rm /var/www/html/index.html
 fi
 
+echo Apache installed \""$servertitle"\"...
+
 # Make sure the MariaDB database server is installed.
 if [ ! -f "/usr/bin/mariadb" ]; then
     apt install -y mariadb-server
@@ -87,6 +89,8 @@ if [ ! -f "/usr/bin/mariadb" ]; then
     mysql --user=root --password=$dbpassword -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
     mysql --user=root --password=$dbpassword -e "FLUSH PRIVILEGES;"
 fi
+
+echo Database created \""$servertitle"\"...
 
 # Make sure PHP is installed.
 if [ ! -d "/etc/php" ]; then
@@ -101,10 +105,14 @@ if [ ! -d "moodle" ]; then
     git clone -b $moodlebranch git://git.moodle.org/moodle.git
 fi
 
+echo Moodle downloaded \""$servertitle"\"...
+
 # Create / set up the Moodle database.
 mysql --user=root --password=$dbpassword -e "CREATE DATABASE $dbname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON  $dbname.* TO 'moodleuser'@'localhost' IDENTIFIED BY '$dbpassword';"
 mysql --user=root --password=$dbpassword -e "FLUSH PRIVILEGES;"
+
+echo Moodle user database created and user setup \""$servertitle"\"...
 
 # Set up the Moodle data folder.
 if [ ! -d "/var/www/$dbname" ]; then
@@ -112,6 +120,7 @@ if [ ! -d "/var/www/$dbname" ]; then
     chown www-data:www-data /var/www/$dbname
 fi
 
+echo Moodle DATADIR created \""$servertitle"\"...
 
 # Copy the Moodle code to the web server
 
@@ -119,14 +128,15 @@ cp -r moodle/* /var/www/html
 mkdir /var/www/html/private
 chmod 755 /var/www/html/private
 rm /var/www/html/config-dist.php
-copyOrDownload config.php /var/www/html/private/config.php 0644
-sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/private/config.php
-sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/private/config.php
+copyOrDownload config.php /var/www/html/config.php 0644
+sed -i "s/{{DBPASSWORD}}/$dbpassword/g" /var/www/html/config.php
+sed -i "s/{{SERVERNAME}}/$servername/g" /var/www/html/config.php
 if [ $sslhandler = "tunnel" ] || [ $sslhandler = "caddy" ]; then
     sed -i "s/{{SSLPROXY}}/true/g" /var/www/html/private/config.php
 else
     sed -i "s/{{SSLPROXY}}/false/g" /var/www/html/private/config.php
 fi
+
 
 # Make sure DOS2Unix is installed.
 if [ ! -f "/usr/bin/dos2unix" ]; then
