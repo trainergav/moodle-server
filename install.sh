@@ -14,7 +14,7 @@ copyOrDownload () {
 }
 
 # Set default command-line flag values.
-moodlebranch="MOODLE_501_STABLE"
+moodlebranch="MOODLE_500_STABLE"
 servertitle="Moodle Server"
 sslhandler="none"
 
