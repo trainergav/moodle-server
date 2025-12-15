@@ -14,7 +14,7 @@ copyOrDownload () {
 }
 
 # Set default command-line flag values.
-moodlebranch="MOODLE_500_STABLE"
+moodlebranch="MOODLE_501_STABLE"
 servertitle="Moodle Server"
 sslhandler="none"
 
@@ -102,9 +102,9 @@ mysql --user=root --password=$dbpassword -e "CREATE DATABASE moodle DEFAULT CHAR
 mysql --user=root --password=$dbpassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON moodle.* TO 'moodleuser'@'localhost' IDENTIFIED BY '$dbpassword';"
 
 # Set up the Moodle data folder.
-if [ ! -d "/var/www/moodle" ]; then
-    mkdir /var/www/moodle
-    chown www-data:www-data /var/www/moodle
+if [ ! -d "/var/lib/moodle" ]; then
+    mkdir /var/lib/moodle
+    chown www-data:www-data /var/lib/moodle
 fi
 
 # Copy the Moodle code to the web server.
