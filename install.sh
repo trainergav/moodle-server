@@ -8,7 +8,7 @@ copyOrDownload () {
     elif [ -f moodle-server/$1 ]; then
         cp moodle-server/$1 $2
     else
-        wget https://github.com/trainergav/moodle-server-501/raw/master/$1 -O $2
+        wget https://github.com/dhicks6345789/moodle-server/raw/master/$1 -O $2
     fi
     chmod $3 $2
 }
