@@ -26,6 +26,9 @@ To run locally with no https use:
 ```
 sudo bash moodle-server/install.sh -servername 10.2.222.138 -dbpassword ExamplePassword123 -servertitle "Moodle Server" -sslhandler none
 
+...
+sudo wget -O composer-setup.php https://getcomposer.org/installer
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 ```
 You'll need to provide some values:
