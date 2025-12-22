@@ -16,7 +16,7 @@ This project has a couple of options for handling connectivity from the outside 
 ## Installation
 On a freshly installed Debian 13 (Trixie) server, as root, run:
 ```
-apt install git
+sudo apt install git -y
 
 git clone https://github.com/trainergav/moodle-server-501.git
 ```
