@@ -18,13 +18,13 @@ On a freshly installed Debian 13 (Trixie) server, as root, run:
 ```
 sudo apt install git -y
 
-git clone https://github.com/trainergav/moodle-server-501.git
+git clone https://github.com/trainergav/moodle-server.git
 ```
 sudo bash moodle-server/install.sh -servername moodle.example.com -dbpassword ExamplePassword123 -servertitle "Example Moodle Server" -sslhandler tunnel
 
 To run locally with no https use:
 ```
-sudo bash moodle-server-501/install.sh -servername 10.2.222.138 -dbpassword ExamplePassword123 -servertitle "Moodle Server" -sslhandler none
+sudo bash moodle-server/install.sh -servername 10.2.222.138 -dbpassword ExamplePassword123 -servertitle "Moodle Server" -sslhandler none
 
 
 ```
