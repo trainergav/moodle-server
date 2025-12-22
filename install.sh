@@ -133,6 +133,8 @@ if [ ! -f "/var/spool/cron/crontabs/root" ]; then
 fi
 
 # Restart Apache so any changes take effect.
+
+sed -i 's/;/var/www/html/public/var/www/html/public/g' /etc/apache2/sites-enabled/000-Default
 service apache2 restart
 
 # Optionally, install Caddy web server.
