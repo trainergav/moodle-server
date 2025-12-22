@@ -134,7 +134,7 @@ fi
 
 # Restart Apache so any changes take effect.
 
-sed -i 's/;DocumentRoot /var/www/html/ DocumentRoot /var/www/html/public/g' /etc/apache2/sites-enabled/000-default.conf
+#sed -i 's/;DocumentRoot /var/www/html/ DocumentRoot /var/www/html/public/g' /etc/apache2/sites-enabled/000-default.conf
 #   sed -i 's/;max_input_vars = 1000/max_input_vars = 6000/g' /etc/php/8.2/apache2/php.ini
 service apache2 restart
 
