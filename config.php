@@ -178,7 +178,7 @@ $CFG->wwwroot   = 'http://{{SERVERNAME}}';
 //
 // - On Windows systems you might specify something like 'c:\moodledata'
 
-$CFG->dataroot  = '/var/www/moodle';
+$CFG->dataroot  = '/var/data/moodle';
 
 
 //=========================================================================
